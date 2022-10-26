@@ -8,9 +8,9 @@ module.exports = {
 		let { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, argumentUser, userID } = require("../slashCommands/bank/withdraw");
 		let db = new QuickDB({ filePath: `./data/roles.sqlite` });
 		const buttonUser = await interaction.guild.members.cache.get(interaction.user.id);
-		const bankerRole = await db.get(`${interaction.guild.id}.bankerRole`) ?? null;
+		const bankerRole = await db.get(`${interaction.guild.id}.bankerRole`) ?? undefined;
 
-		if (!buttonUser.roles.cache.has(bankerRole)) {
+		if (!buttonUser.roles.cache.has(bankerRole) && !buttonUser.permissions.has("ADMINISTRATOR")) {
 			const permEmbed = new EmbedBuilder()
 				.setTitle('Insufficient Permissions')
 				.setDescription(`You have insufficient permissions due to not having the <@&${bankerRole}> role.`)
