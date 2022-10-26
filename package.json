@@ -16,7 +16,7 @@
     "@discordjs/rest": "^0.4.0-dev.1648166871.cedd053",
     "ascii-table": "^0.0.9",
     "better-sqlite3": "^7.6.2",
-    "chalk": "^2.4.1",
+    "chalk": "^5.1.2",
     "discord-api-types": "^0.30.0",
     "discord-economy-super": "^1.6.9",
     "discord.js": "^14.0.2",
