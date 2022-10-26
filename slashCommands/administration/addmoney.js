@@ -1,5 +1,4 @@
 const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const Economy = require('discord-economy-super');
 
 module.exports = {
     name: 'addmoney',
@@ -21,14 +20,10 @@ module.exports = {
         }
     ],
     run: async (client, interaction) => {
-        const eco = new Economy({
-            storagePath:
-                `./data/eco.json`
-        });
         const guildID = interaction.guild.id;
         const args = interaction.options.get('amount').value;
         const userID = interaction.options.get('user').value;
-        let argumentUser = eco.users.get(userID, guildID);
+        let argumentUser = client.eco.users.get(userID, guildID);
 
         argumentUser.balance.add(args);
 

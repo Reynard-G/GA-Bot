@@ -48,7 +48,7 @@ module.exports = {
 
                     const dmEmbed = new EmbedBuilder()
                         .setTitle('Approved Withdraw Payment')
-                        .setDescription(`You have been paid you approved withdrawal.`)
+                        .setDescription(`You have been paid your approved withdrawal.`)
                         .setImage(url)
                         .setColor('Green')
                         .setTimestamp()
@@ -56,7 +56,7 @@ module.exports = {
 
                     const confirmedEmbed = new EmbedBuilder()
                         .setTitle('Approved Withdraw Payment')
-                        .setDescription(`<@${userID}> has been paid your approved withdrawal.`)
+                        .setDescription(`<@${userID}> has been paid their approved withdrawal.`)
                         .setImage(url)
                         .setColor('Green')
                         .setTimestamp()

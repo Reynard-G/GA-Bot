@@ -1,4 +1,5 @@
 const { ActivityType } = require('discord.js');
+const Economy = require('discord-economy-super');
 const client = require('..');
 const chalk = require('chalk');
 
@@ -27,4 +28,12 @@ client.on("ready", () => {
 		s++;
 	}, 30000);
 	console.log(chalk.red(`Logged in as ${client.user.tag}!`))
+});
+
+let economy = new Economy({
+	storagePath: `./data/eco.json`
+});
+
+economy.on('ready', eco => {
+	client.eco = eco;
 });

@@ -1,5 +1,4 @@
 const { EmbedBuilder, ApplicationCommandType, ActionRowBuilder, ButtonBuilder, ApplicationCommandOptionType } = require('discord.js');
-const Economy = require('discord-economy-super');
 const { QuickDB } = require("quick.db");
 
 module.exports = {
@@ -37,14 +36,10 @@ module.exports = {
 
         db = new QuickDB({ filePath: `./data/depositInfo.sqlite` });
 
-        const eco = new Economy({
-            storagePath:
-                `./data/eco.json`
-        });
         const amount = interaction.options.get('amount').value;
         const attachment = interaction.options.getAttachment('screenshot').proxyURL;
         const userID = interaction.user.id;
-        const argumentUser = eco.users.get(userID, interaction.guild.id);
+        const argumentUser = client.eco.users.get(userID, interaction.guild.id);
         const balance = argumentUser.balance.get();
 
         function decimalCount(money) {

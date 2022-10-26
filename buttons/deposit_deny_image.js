@@ -56,7 +56,7 @@ module.exports = {
 
                     const confirmedEmbed = new EmbedBuilder()
                         .setTitle('Denied Deposit Repayment')
-                        .setDescription(`<@${userID}> has been repaid your denied deposit.`)
+                        .setDescription(`<@${userID}> has been repaid their denied deposit.`)
                         .setImage(url)
                         .setColor('Green')
                         .setTimestamp()

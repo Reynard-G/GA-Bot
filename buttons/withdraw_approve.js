@@ -21,7 +21,7 @@ module.exports = {
 			return await interaction.reply({ embeds: [permEmbed], ephemeral: true });
 		}
 
-		argumentUser.balance.subtract(taxedAmount);
+		argumentUser.balance.subtract(amount);
 		const currBalance = argumentUser.balance.get();
 
 		buttons = new ActionRowBuilder()

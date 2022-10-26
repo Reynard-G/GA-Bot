@@ -1,5 +1,4 @@
 const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const Economy = require('discord-economy-super');
 const { QuickDB } = require("quick.db");
 
 module.exports = {
@@ -57,13 +56,8 @@ module.exports = {
     ],
     run: async (client, interaction) => {
         if (interaction.options.getSubcommand() === 'balance') {
-
-            const eco = new Economy({
-                storagePath:
-                    `./data/eco.json`
-            });
             const userID = interaction.options.get('user').value;
-            const argumentUser = eco.users.get(userID, interaction.guild.id);
+            const argumentUser = client.eco.users.get(userID, interaction.guild.id);
             const balance = argumentUser.balance.get();
 
             const balanceEmbed = new EmbedBuilder()
