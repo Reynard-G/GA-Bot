@@ -5,6 +5,7 @@ module.exports = {
     description: "Administrator Command, removes money to a specified account.",
     cooldown: 3000,
     type: ApplicationCommandType.ChatInput,
+    default_member_permissions: 'Administrator',
     options: [
         {
             name: 'amount',

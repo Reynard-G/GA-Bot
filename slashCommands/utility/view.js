@@ -6,6 +6,7 @@ module.exports = {
     description: "View the settings of your server or a certain user in your server.",
     cooldown: 3000,
     type: ApplicationCommandType.ChatInput,
+    default_member_permissions: 'Administrator',
     options: [
         {
             name: 'balance',

@@ -6,6 +6,7 @@ module.exports = {
     description: "Set the rate to actions will be taxed at.",
     cooldown: 3000,
     type: ApplicationCommandType.ChatInput,
+    default_member_permissions: 'Administrator',
     options: [
         {
             name: 'deposit',

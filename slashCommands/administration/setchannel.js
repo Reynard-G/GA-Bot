@@ -6,6 +6,7 @@ module.exports = {
     description: "Set which channel to direct actions.",
     cooldown: 3000,
     type: ApplicationCommandType.ChatInput,
+    default_member_permissions: 'Administrator',
     options: [
         {
             name: 'deposit',

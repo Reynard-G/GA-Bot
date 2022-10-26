@@ -6,7 +6,7 @@ module.exports = {
     description: "Set which role will have the permissions to accept/deny deposit & loan requests",
     cooldown: 3000,
     type: ApplicationCommandType.ChatInput,
-    default_member_permissions: 'ManageRoles',
+    default_member_permissions: 'Administrator',
     options: [
         {
             name: 'role',
