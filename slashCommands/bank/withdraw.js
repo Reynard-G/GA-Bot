@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandType, ActionRowBuilder, ButtonBuilder, ComponentType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandType, ActionRowBuilder, ButtonBuilder, ComponentType, ApplicationCommandOptionType } = require('discord.js');
 const Economy = require('discord-economy-super');
 const { QuickDB } = require("quick.db");
 
@@ -12,7 +12,7 @@ module.exports = {
             name: 'amount',
             description: 'Specify an amount to add.',
             required: true,
-            type: 10
+            type: ApplicationCommandOptionType.Number
         }
     ],
     run: async (client, interaction) => {

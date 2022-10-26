@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const { QuickDB } = require("quick.db");
 
 module.exports = {
@@ -11,7 +11,7 @@ module.exports = {
         {
             name: 'role',
             description: 'Specify which role to be the Banker role.',
-            type: 8,
+            type: ApplicationCommandOptionType.Role,
             required: true
         }
     ],

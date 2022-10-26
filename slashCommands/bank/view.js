@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
 const Economy = require('discord-economy-super');
 const { QuickDB } = require("quick.db");
 
@@ -11,12 +11,12 @@ module.exports = {
         {
             name: 'balance',
             description: "Check a user's balance in your server.",
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: 'user',
                     description: 'Specify the user to check their current balance.',
-                    type: 6,
+                    type: ApplicationCommandOptionType.User,
                     required: true
                 }
             ]
@@ -24,32 +24,32 @@ module.exports = {
         {
             name: 'depositchannel',
             description: "Check what the server's deposit channel is set too.",
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
         },
         {
             name: 'depositrate',
             description: "Check what the server's deposit rates are set too.",
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
         },
         {
             name: 'withdrawchannel',
             description: "Check what the server's withdrawal channel is set too.",
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
         },
         {
             name: 'withdrawrate',
             description: "'Check what the server's withdrawal rates are set too.",
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
         },
         {
             name: 'interestrate',
             description: 'Check what the interest rate of a specific user is set too.',
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: 'user',
                     description: 'Specify the user to check their current interest rate.',
-                    type: 6,
+                    type: ApplicationCommandOptionType.User,
                     required: true
                 }
             ]

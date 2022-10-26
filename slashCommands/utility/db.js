@@ -12,30 +12,30 @@ module.exports = {
         {
             name: 'add',
             description: 'Add data properties using an ID.',
-            type: ApplicationCommandOptionType.SubCommand,
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: 'name',
                     description: "The Database's name you want to modify.",
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: 'id',
                     description: 'The ID of the table you want to access.',
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: 'properties',
                     description: 'The properties of the data you want to access.',
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: 'value',
                     description: 'The value of the data you want to add.',
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]
@@ -43,24 +43,24 @@ module.exports = {
         {
             name: 'remove',
             description: 'Remove data properties using an ID.',
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: 'name',
                     description: "The Database's name you want to modify.",
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: 'id',
                     description: 'The ID of the table you want to access.',
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: 'properties',
                     description: 'The properties of the data you want to access.',
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]
@@ -68,24 +68,24 @@ module.exports = {
         {
             name: 'check',
             description: 'Check data properties using an ID.',
-            type: 1,
+            type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
                     name: 'name',
                     description: "The Database's name you want to modify.",
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: 'id',
                     description: 'The ID of the table you want to access.',
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 },
                 {
                     name: 'properties',
                     description: 'The properties of the data you want to access.',
-                    type: 3,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]
