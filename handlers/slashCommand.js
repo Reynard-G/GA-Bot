@@ -11,7 +11,7 @@ const table = new AsciiTable().setHeading('Slash Commands', 'Stats').setBorder('
 const TOKEN = process.env.TOKEN;
 const CLIENT_ID = process.env.CLIENT_ID;
 
-const rest = new REST({ version: '9' }).setToken(TOKEN);
+const rest = new REST({ version: '10' }).setToken(TOKEN);
 
 module.exports = (client) => {
 	const slashCommands = []; 
