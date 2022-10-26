@@ -1,7 +1,6 @@
 const { EmbedBuilder, Collection, PermissionsBitField } = require('discord.js')
 const ms = require('ms');
 const client = require('..');
-const config = require('../config.json');
 
 const prefix = client.prefix;
 const cooldown = new Collection();
@@ -18,7 +17,16 @@ client.on('messageCreate', async message => {
 	
 	if(command) {
 		if(command.cooldown) {
-				if(cooldown.has(`${command.name}${message.author.id}`)) return message.channel.send({ content: config.messages["COOLDOWN_MESSAGE"].replace('<duration>', ms(cooldown.get(`${command.name}${message.author.id}`) - Date.now(), {long : true}) ), ephemeral: true });
+				if(cooldown.has(`${command.name}${message.author.id}`)) {
+					const cooldownEmbed = new EmbedBuilder()
+						.setTitle('Cooldown')
+						.setDescription(`You are currently on cooldown for this command. Please wait **${ms(cooldown.get(`${command.name}${message.author.id}`) - Date.now(), { long: true })}**.`)
+						.setColor('Red')
+						.setTimestamp()
+						.setFooter({ text: `${message.author.id} `, iconURL: message.author.displayAvatarURL() });
+
+					return message.reply({ embeds: [cooldownEmbed], ephemeral: true }) 
+				}
 				if(command.userPerms || command.botPerms) {
 					if(!message.member.permissions.has(PermissionsBitField.resolve(command.userPerms || []))) {
 						const userPerms = new EmbedBuilder()

@@ -1,4 +1,4 @@
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 const Economy = require('discord-economy-super');
 const { QuickDB } = require("quick.db");
 

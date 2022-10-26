@@ -1,7 +1,6 @@
 const { EmbedBuilder, Collection, PermissionsBitField } = require('discord.js');
 const ms = require('ms');
 const client = require('..');
-const config = require('../config.json');
 
 const cooldown = new Collection();
 
@@ -18,7 +17,16 @@ client.on('interactionCreate', async interaction => {
 		if(!slashCommand) return client.slashCommands.delete(interaction.commandName);
 		try {
 			if(slashCommand.cooldown) {
-				if(cooldown.has(`slash-${slashCommand.name}${interaction.user.id}`)) return interaction.reply({ content: config.messages["COOLDOWN_MESSAGE"].replace('<duration>', ms(cooldown.get(`slash-${slashCommand.name}${interaction.user.id}`) - Date.now(), {long : true}) ), ephemeral: true })
+				if(cooldown.has(`slash-${slashCommand.name}${interaction.user.id}`)) {
+					const cooldownEmbed = new EmbedBuilder()
+						.setTitle('Cooldown')
+						.setDescription(`You are currently on cooldown for this command. Please wait **${ms(cooldown.get(`slash-${slashCommand.name}${interaction.user.id}`) - Date.now(), { long: true })}**.`)
+						.setColor('Red')
+						.setTimestamp()
+						.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
+
+					return interaction.reply({ embeds: [cooldownEmbed], ephemeral: true }) 
+				}
 				if(slashCommand.userPerms || slashCommand.botPerms) {
 					if(!interaction.memberPermissions.has(PermissionsBitField.resolve(slashCommand.userPerms || []))) {
 						const userPerms = new EmbedBuilder()
