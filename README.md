@@ -32,7 +32,7 @@ All commands that start with `/set` are to configure per-server settings.
 
 ## License
 
-This project is licensed under the [MIT](https://choosealicense.com/licenses/mit/) License - see the LICENSE.md file for details.
+This project is licensed under the [GNU General Public License v3.0](https://choosealicense.com/licenses/mit/) License - see the LICENSE.md file for details.
 
 ## Acknowledgments
 
