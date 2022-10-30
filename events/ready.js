@@ -1,7 +1,17 @@
 const { ActivityType } = require('discord.js');
-const Economy = require('discord-economy-super');
+const mariadb = require('mariadb');
 const client = require('..');
 const chalk = require('chalk');
+
+require('dotenv').config();
+const pool = mariadb.createPool({
+	host: process.env.DB_HOST,
+	database: process.env.DB_DATABASE,
+	user: process.env.DB_USER,
+	password: process.env.DB_PASS,
+	connectionLimit: 5
+});
+client.pool = pool
 
 client.on("ready", () => {
 	const activities = [
@@ -28,12 +38,4 @@ client.on("ready", () => {
 		s++;
 	}, 30000);
 	console.log(chalk.red(`Logged in as ${client.user.tag}!`))
-});
-
-let economy = new Economy({
-	storagePath: `./data/eco.json`
-});
-
-economy.on('ready', eco => {
-	client.eco = eco;
 });

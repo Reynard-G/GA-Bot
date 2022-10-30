@@ -1,5 +1,4 @@
-const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const { QuickDB } = require("quick.db");
+const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: 'cancel',
@@ -20,48 +19,38 @@ module.exports = {
     ],
     run: async (client, interaction) => {
         const subcommand = interaction.options.getSubcommand();
-        let { requestMsg } = require(`./${subcommand}`);
-        const db = new QuickDB({ filePath: `./data/${subcommand}Requests.sqlite` });
 
-        if (!await db.has(`${interaction.guild.id}.${interaction.user.id}.amount`)) {
-            const alreadyRequestedEmbed = new EmbedBuilder()
-                .setTitle(`${subcommand} Request`)
-                .setDescription(`You don't have a ${subcommand} request! Do \`/${subcommand}\` to get started at making a request.`)
-                .setColor('Red')
-                .setTimestamp()
-                .setFooter({ text: `${interaction.user.id}`, iconURL: interaction.user.displayAvatarURL() });
+        const loginModal = new ModalBuilder()
+            .setTitle('Login')
+            .setCustomId('cancel_modal');
 
-            return await interaction.reply({ embeds: [alreadyRequestedEmbed], ephemeral: true });
-        }
+        const idInput = new TextInputBuilder()
+            .setCustomId('idInput')
+            .setPlaceholder('Enter your account ID here')
+            .setStyle(TextInputStyle.Short)
+            .setLabel('Account ID')
+            .setMinLength(12)
+            .setMaxLength(12)
+            .setRequired(true);
 
-        const cancelSuccessEmbed = new EmbedBuilder()
-            .setTitle(`Cancel Request`)
-            .setDescription(`Your ${subcommand} request has successfully been cancelled.`)
-            .setColor('Green')
-            .setTimestamp()
-            .setFooter({ text: `${interaction.user.id}`, iconURL: interaction.user.displayAvatarURL() });
+        const passphraseInput = new TextInputBuilder()
+            .setCustomId('passphraseInput')
+            .setPlaceholder('Enter your account passphrase here')
+            .setStyle(TextInputStyle.Short)
+            .setLabel('Account Passphrase')
+            .setMinLength(6)
+            .setMaxLength(6)
+            .setRequired(true);
 
-        const cancelFailedEmbed = new EmbedBuilder()
-            .setTitle(`Cancel Request`)
-            .setDescription(`Your ${subcommand} request has failed to be cancelled. Please contact a \`staff member\` & \`MilkLegend#5071\`.`)
-            .setColor('Red')
-            .setTimestamp()
-            .setFooter({ text: `${interaction.user.id}`, iconURL: interaction.user.displayAvatarURL() });
+        const idRow = new ActionRowBuilder()
+            .addComponents(idInput);
 
-        if (subcommand == 'deposit') {
-            if (await db.delete(`${interaction.guild.id}.${interaction.user.id}.amount`)) {
-                requestMsg.delete();
-                return await interaction.reply({ embeds: [cancelSuccessEmbed] });
-            } else {
-                return await interaction.reply({ embeds: [cancelFailedEmbed] });
-            }
-        } else if (subcommand == 'withdraw') {
-            if (await db.delete(`${interaction.guild.id}.${interaction.user.id}.amount`)) {
-                requestMsg.delete();
-                return await interaction.reply({ embeds: [cancelSuccessEmbed] });
-            } else {
-                return await interaction.reply({ embeds: [cancelFailedEmbed] });
-            }
-        }
+        const passphraseRow = new ActionRowBuilder()
+            .addComponents(passphraseInput);
+
+        loginModal.addComponents(idRow, passphraseRow);
+        await interaction.showModal(loginModal);
+
+        return module.exports = { subcommand };
     }
 };

@@ -1,21 +1,41 @@
-const { EmbedBuilder, ApplicationCommandType } = require('discord.js');
+const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ApplicationCommandType } = require('discord.js');
 
 module.exports = {
     name: 'balance',
-    description: "See your current balance",
+    description: "See your account's current balance",
     cooldown: 3000,
     type: ApplicationCommandType.ChatInput,
     run: async (client, interaction) => {
-        const argumentUser = client.eco.users.get(interaction.user.id, interaction.guild.id);
-        const balance = argumentUser.balance.get();
 
-        const balanceEmbed = new EmbedBuilder()
-            .setTitle('Balance')
-            .setDescription(`You currently have **$${balance}** in your account!`)
-            .setColor('White')
-            .setTimestamp()
-            .setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
+        const loginModal = new ModalBuilder()
+            .setTitle('Login')
+            .setCustomId('balance_modal');
 
-        return await interaction.reply({ embeds: [balanceEmbed] });
+        const idInput = new TextInputBuilder()
+            .setCustomId('idInput')
+            .setPlaceholder('Enter your account ID here')
+            .setStyle(TextInputStyle.Short)
+            .setLabel('Account ID')
+            .setMinLength(12)
+            .setMaxLength(12)
+            .setRequired(true);
+
+        const passphraseInput = new TextInputBuilder()
+            .setCustomId('passphraseInput')
+            .setPlaceholder('Enter your account passphrase here')
+            .setStyle(TextInputStyle.Short)
+            .setLabel('Account Passphrase')
+            .setMinLength(6)
+            .setMaxLength(6)
+            .setRequired(true);
+
+        const idRow = new ActionRowBuilder()
+            .addComponents(idInput);
+
+        const passphraseRow = new ActionRowBuilder()
+            .addComponents(passphraseInput);
+
+        loginModal.addComponents(idRow, passphraseRow);
+        await interaction.showModal(loginModal);
     }
 };

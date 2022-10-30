@@ -5,24 +5,11 @@ module.exports = {
 	id: 'withdraw_approve_button',
 	permissions: [],
 	run: async (client, interaction) => {
-		let { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, argumentUser, userID } = require("../slashCommands/bank/withdraw");
-		let db = new QuickDB({ filePath: `./data/roles.sqlite` });
-		const buttonUser = await interaction.guild.members.cache.get(interaction.user.id);
-		const bankerRole = await db.get(`${interaction.guild.id}.bankerRole`) ?? undefined;
-
-		if (!buttonUser.roles.cache.has(bankerRole) && !buttonUser.permissions.has("ADMINISTRATOR")) {
-			const permEmbed = new EmbedBuilder()
-				.setTitle('Insufficient Permissions')
-				.setDescription(`You have insufficient permissions due to not having the <@&${bankerRole}> role.`)
-				.setColor('Red')
-				.setTimestamp()
-				.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
-
-			return await interaction.reply({ embeds: [permEmbed], ephemeral: true });
-		}
-
-		argumentUser.balance.subtract(amount);
-		const currBalance = argumentUser.balance.get();
+		let { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, userID, id } = require("../modals/withdraw");
+		const conn = await client.pool.getConnection();
+		balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance; // Get balance again to update it
+		const currBalance = +Number(Math.round(parseFloat((balance - amount) + "e2")) + "e-2");
+		await conn.query(`UPDATE eco SET balance=${currBalance} WHERE id='${id}';`);
 
 		buttons = new ActionRowBuilder()
 			.addComponents(
@@ -47,24 +34,25 @@ module.exports = {
 
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Withdrawal Request')
-			.setDescription(`<@${userID}>'s withdrawal request of **$${amount}** is **ACCEPTED** and was taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**. \n Balance: **$${balance}**  ➡️  **$${currBalance}**.`)
+			.setDescription(`\`${id}\`'s withdrawal request of **$${amount}** is **ACCEPTED** and was taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**. \n Balance: **$${balance}**  ➡️  **$${currBalance}**.`)
 			.setColor('Green')
 			.setTimestamp()
-			.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
+			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
 
 		await interaction.update({ embeds: [requestEmbed], components: [buttons] });
-		module.exports = { requestEmbed, buttons, userID };
+		module.exports = { requestEmbed, buttons, userID, id };
+		await client.users.cache.get(userID).send({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle('Withdrawal Approved')
+					.setDescription(`Approved \`${id}\`'s request to withdrawal **$${amount}** taxed to **$${taxedAmount}**.`)
+					.setColor('Green')
+					.setTimestamp()
+					.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+			]
+		});
 
-		const approveEmbed = new EmbedBuilder()
-			.setTitle('Withdrawal Approved')
-			.setDescription(`Approved <@${userID}>'s request to withdrawal **$${amount}** taxed to **$${taxedAmount}**.`)
-			.setColor('Green')
-			.setTimestamp()
-			.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
-
-		await client.users.cache.get(userID).send({ embeds: [approveEmbed] });
-
-		db = new QuickDB({ filePath: `./data/withdrawRequests.sqlite` });
-		return await db.delete(`${interaction.guild.id}.${interaction.user.id}.amount`);
+		const db = new QuickDB({ filePath: `./data/withdrawRequests.sqlite` });
+		return await db.delete(`${interaction.guild.id}.${id}.amount`);
 	}
 };

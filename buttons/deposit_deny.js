@@ -5,21 +5,7 @@ module.exports = {
 	id: 'deposit_deny_button',
 	permissions: [],
 	run: async (client, interaction) => {
-		let { requestEmbed, buttons, attachment, percentage, constant, taxedAmount, amount, userID } = require("../slashCommands/bank/deposit");
-		let db = new QuickDB({ filePath: `./data/roles.sqlite` });
-		const buttonUser = await interaction.guild.members.cache.get(interaction.user.id);
-		const bankerRole = await db.get(`${interaction.guild.id}.bankerRole`) ?? undefined;
-
-		if (!buttonUser.roles.cache.has(bankerRole) && !buttonUser.permissions.has("ADMINISTRATOR")) {
-			const permEmbed = new EmbedBuilder()
-				.setTitle('Insufficient Permissions')
-				.setDescription(`You have insufficient permissions due to not having the <@&${bankerRole}> role.`)
-				.setColor('Red')
-				.setTimestamp()
-				.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
-
-			return await interaction.reply({ embeds: [permEmbed], ephemeral: true });
-		}
+		let { requestEmbed, buttons, attachment, percentage, constant, taxedAmount, amount, userID, id } = require("../modals/deposit");
 
 		buttons = new ActionRowBuilder()
 			.addComponents(
@@ -44,25 +30,27 @@ module.exports = {
 
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Deposit Request')
-			.setDescription(`<@${userID}>'s deposit request of **$${amount}** is **DENIED** and was going to be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**.`)
-			.setImage(attachment)
+			.setDescription(`\`${id}\`'s deposit request of **$${amount}** is **DENIED** and was going to be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**.`)
+			.setImage(attachment.proxyURL)
 			.setColor('Red')
 			.setTimestamp()
-			.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
+			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
 
 		await interaction.update({ embeds: [requestEmbed], components: [buttons] });
-		module.exports = { requestEmbed, buttons, userID };
+		module.exports = { requestEmbed, buttons, userID, id };
 
-		const denyEmbed = new EmbedBuilder()
-			.setTitle('Deposit Denied')
-			.setDescription(`Denied <@${userID}>'s request to deposit **$${amount}** taxed to **$${taxedAmount}**.`)
-			.setColor('Red')
-			.setTimestamp()
-			.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
+		await client.users.cache.get(userID).send({
+			embeds: [
+				new EmbedBuilder()
+					.setTitle('Deposit Denied')
+					.setDescription(`Denied \`${id}\`'s request to deposit **$${amount}** taxed to **$${taxedAmount}**.`)
+					.setColor('Red')
+					.setTimestamp()
+					.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+			]
+		});
 
-		await client.users.cache.get(userID).send({ embeds: [denyEmbed] });
-
-		db = new QuickDB({ filePath: `./data/depositRequests.sqlite` });
-		return await db.delete(`${interaction.guild.id}.${interaction.user.id}.amount`);
+		const db = new QuickDB({ filePath: `./data/depositRequests.sqlite` });
+		return await db.delete(`${interaction.guild.id}.${id}.amount`);
 	}
 };
