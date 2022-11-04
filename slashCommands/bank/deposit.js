@@ -1,4 +1,4 @@
-const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
     name: 'deposit',
@@ -23,6 +23,20 @@ module.exports = {
         const amount = interaction.options.getNumber('amount');
         const attachment = interaction.options.getAttachment('screenshot');
 
+        if (amount % 100 != 0) {
+            return await interaction.reply({
+                ephemeral: true,
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('Invalid Amount')
+                        .setDescription('The amount must be a multiple of **$100** since \`1 share = $100\`.')
+                        .setColor('Red')
+                        .setTimestamp()
+                        .setFooter({ text: `INVALID AMOUNT`, iconURL: interaction.guild.iconURL() })
+                ]
+            });
+        }
+
         const loginModal = new ModalBuilder()
             .setTitle('Login')
             .setCustomId('deposit_modal');
@@ -41,8 +55,8 @@ module.exports = {
             .setPlaceholder('Enter your account passphrase here')
             .setStyle(TextInputStyle.Short)
             .setLabel('Account Passphrase')
-            .setMinLength(6)
-            .setMaxLength(6)
+            .setMinLength(0)
+            .setMaxLength(255)
             .setRequired(true);
 
         const idRow = new ActionRowBuilder()

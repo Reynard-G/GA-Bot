@@ -1,5 +1,5 @@
 const { EmbedBuilder, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
-const fs = require('fs');
+const fetch = require('node-fetch');
 
 module.exports = {
     name: 'register',
@@ -17,14 +17,28 @@ module.exports = {
             return result;
         }
 
+        function getRandomPassphrase(arr, n) {
+            var result = new Array(n),
+                len = arr.length,
+                taken = new Array(len);
+            if (n > len)
+                throw new RangeError("getRandom: more elements taken than available");
+            while (n--) {
+                var x = Math.floor(Math.random() * len);
+                result[n] = arr[x in taken ? taken[x] : x];
+                taken[x] = --len in taken ? taken[len] : len;
+            }
+            return result;
+        }
+
         const user = generateID(12);
 
         let passwordList = [];
-        const allFileContents = await fs.readFileSync('./passwordList.txt', 'utf-8');
+        const allFileContents = await fetch('https://raw.githubusercontent.com/bitcoin/bips/master/bip-0039/english.txt').then(response => response.text());
         allFileContents.split(/\r?\n/).forEach(line => {
             passwordList.push(`${line}`);
         });
-        const passphrase = passwordList[Math.floor(Math.random() * passwordList.length)];
+        const passphrase = getRandomPassphrase(passwordList, 6).join(' ');
 
         const conn = await client.pool.getConnection();
         conn.query(`INSERT INTO eco (id, passphrase, balance) VALUES ('${user}', '${passphrase}', '0');`);
@@ -35,7 +49,7 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setTitle('Registered')
-                    .setDescription(`Your account ID is **${user}** and your account passphrase is **${passphrase}**. Please keep these safe as they are the only way to access your account.`)
+                    .setDescription(`Your account ID is **${user}** and your account passphrase is **${passphrase}**. Please keep these safe as they are the only way to access your account. \n **ANYONE WITH THESE CREDENTIALS AND ACCESS YOUR ACCOUNT!**`)
                     .setColor('White')
                     .setTimestamp()
                     .setFooter({ text: `${user} `, iconURL: interaction.guild.iconURL() })

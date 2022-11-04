@@ -24,7 +24,7 @@ client.on('interactionCreate', async interaction => {
                         new EmbedBuilder()
                             .setColor('Red')
                             .setTitle(`Failed To Execute Modals!`)
-                            .setDescription(`I cant execute the modals for you.`)
+                            .setDescription(`I can\'t execute the modal for you.`)
                             .setTimestamp()
                             .setFooter({ text: `FAILED MODAL`, iconURL: interaction.guild.iconURL() })
                     ]
@@ -33,30 +33,37 @@ client.on('interactionCreate', async interaction => {
 
             // ====================< Start Command >=================== \\
             try {
-                const id = interaction.fields.getTextInputValue('idInput');
-                const passphrase = interaction.fields.getTextInputValue('passphraseInput');
-                const conn = await client.pool.getConnection();;
-                const exists = await conn.query(`SELECT EXISTS(SELECT * FROM eco WHERE id='${id}' AND passphrase='${passphrase}');`);
 
-                if (exists[0][`EXISTS(SELECT * FROM eco WHERE id='${id}' AND passphrase='${passphrase}')`] == 0) {
-                    await interaction.reply({
-                        ephemeral: true,
-                        embeds: [
-                            new EmbedBuilder()
-                                .setTitle('Invalid Credentials')
-                                .setDescription(`The credentials you entered are invalid. Please try again.`)
-                                .setColor('Red')
-                                .setTimestamp()
-                                .setFooter({ text: `INVALID ID`, iconURL: interaction.guild.iconURL() })
-                        ]
-                    });
+                if (interaction.customId != 'createpoll_modal') {
+
+                    const id = interaction.fields.getTextInputValue('idInput');
+                    const passphrase = interaction.fields.getTextInputValue('passphraseInput');
+                    const conn = await client.pool.getConnection();;
+                    const exists = await conn.query(`SELECT EXISTS(SELECT * FROM eco WHERE id='${id}' AND passphrase='${passphrase}');`);
+
+                    if (exists[0][`EXISTS(SELECT * FROM eco WHERE id='${id}' AND passphrase='${passphrase}')`] == 0) {
+                        await interaction.reply({
+                            ephemeral: true,
+                            embeds: [
+                                new EmbedBuilder()
+                                    .setTitle('Invalid Credentials')
+                                    .setDescription(`The credentials you entered are invalid. Please try again.`)
+                                    .setColor('Red')
+                                    .setTimestamp()
+                                    .setFooter({ text: `INVALID CREDENTIALS`, iconURL: interaction.guild.iconURL() })
+                            ]
+                        });
+                        conn.release();
+                    } else {
+                        console.log(command);
+                        let balance = (await conn.query(`SELECT balance FROM eco WHERE id='${id}';`))[0].balance;
+                        module.exports = { id, passphrase, balance };
+                        await command.run(client, interaction);
+                    }
                 } else {
-                    console.log(command)
-                    let balance = (await conn.query(`SELECT balance FROM eco WHERE id='${id}';`))[0].balance;
-                    module.exports = {id, passphrase, balance};
+                    console.log(command);
                     await command.run(client, interaction);
                 }
-                conn.release();
             } catch (error) {
                 console.log(error);
                 await interaction.reply({

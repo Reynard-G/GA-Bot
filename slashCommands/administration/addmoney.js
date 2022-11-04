@@ -14,27 +14,42 @@ module.exports = {
             type: ApplicationCommandOptionType.Number
         },
         {
-            name: 'user',
-            description: 'Specify a user to add funds too.',
+            name: 'id',
+            description: 'Specify an account to add funds too.',
             required: true,
-            type: ApplicationCommandOptionType.User
+            type: ApplicationCommandOptionType.String
         }
     ],
     run: async (client, interaction) => {
-        const guildID = interaction.guild.id;
-        const args = interaction.options.get('amount').value;
-        const userID = interaction.options.get('user').value;
-        let argumentUser = client.eco.users.get(userID, guildID);
+        const amount = interaction.options.getNumber('amount');
+        const id = interaction.options.getString('id');
+        const conn = await client.pool.getConnection();
+        await conn.query(`UPDATE eco SET balance=balance + ${amount} WHERE id='${id}'`);
+        conn.release();
 
-        argumentUser.balance.add(args);
+        // Check if ID exists in database then continue
+        const checkID = await conn.query(`SELECT * FROM eco WHERE id='${id}'`);
+        if (checkID.length < 1) return await interaction.reply({
+            ephemeral: true,
+            embeds: [
+                new EmbedBuilder()
+                    .setTitle('Invalid ID')
+                    .setDescription(`The ID that you have entered does not exist. Please try again.`)
+                    .setColor('Red')
+                    .setTimestamp()
+                    .setFooter({ text: `INVALID ID`, iconURL: interaction.guild.iconURL() })
+            ]
+        });
 
-        const addedEmbed = new EmbedBuilder()
-            .setTitle('Money Added')
-            .setDescription(`Sucessfully added **$${args}** to <@${userID}>'s balance.`)
-            .setColor('Green')
-            .setTimestamp()
-            .setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
-
-        return await interaction.reply({ embeds: [addedEmbed] });
+        return await interaction.reply({
+            embeds: [
+                new EmbedBuilder()
+                    .setTitle('Money Added')
+                    .setDescription(`Sucessfully added **$${amount}** to \`${id}\`'s balance.`)
+                    .setColor('Green')
+                    .setTimestamp()
+                    .setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() })
+            ]
+        });
     }
 };

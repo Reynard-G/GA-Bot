@@ -14,9 +14,9 @@ module.exports = {
             type: ApplicationCommandOptionType.Subcommand,
             options: [
                 {
-                    name: 'user',
+                    name: 'id',
                     description: 'Specify the user to check their current balance.',
-                    type: ApplicationCommandOptionType.User,
+                    type: ApplicationCommandOptionType.String,
                     required: true
                 }
             ]
@@ -57,18 +57,34 @@ module.exports = {
     ],
     run: async (client, interaction) => {
         if (interaction.options.getSubcommand() === 'balance') {
-            const userID = interaction.options.get('user').value;
-            const argumentUser = client.eco.users.get(userID, interaction.guild.id);
-            const balance = argumentUser.balance.get();
+            const id = interaction.options.getString('id');
+            const conn = await client.pool.getConnection();
+            const checkID = await conn.query(`SELECT * FROM eco WHERE id='${id}'`);
+            if (checkID.length < 1) return await interaction.reply({
+                ephemeral: true,
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('Invalid ID')
+                        .setDescription(`The ID that you have entered does not exist. Please try again.`)
+                        .setColor('Red')
+                        .setTimestamp()
+                        .setFooter({ text: `INVALID ID`, iconURL: interaction.user.displayAvatarURL() })
+                ]
+            });
 
-            const balanceEmbed = new EmbedBuilder()
-                .setTitle('Balance')
-                .setDescription(`<@${userID}>'s balance is currently **$${balance}**.`)
-                .setColor('White')
-                .setTimestamp()
-                .setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
+            const balance = (await conn.query(`SELECT balance FROM eco WHERE id='${id}'`))[0].balance;
+            conn.release();
 
-            return await interaction.reply({ embeds: [balanceEmbed] });
+            return await interaction.reply({
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('Balance')
+                        .setDescription(`\`${id}\`'s balance is currently **$${balance} ≈ ${+Number(Math.round(parseFloat((balance / 100) + "e2")) + "e-2")} shares**.`)
+                        .setColor('White')
+                        .setTimestamp()
+                        .setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() })
+                ]
+            });
 
         } else if (interaction.options.getSubcommand() === 'depositchannel') {
 

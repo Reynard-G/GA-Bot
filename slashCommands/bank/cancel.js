@@ -38,8 +38,8 @@ module.exports = {
             .setPlaceholder('Enter your account passphrase here')
             .setStyle(TextInputStyle.Short)
             .setLabel('Account Passphrase')
-            .setMinLength(6)
-            .setMaxLength(6)
+            .setMinLength(0)
+            .setMaxLength(255)
             .setRequired(true);
 
         const idRow = new ActionRowBuilder()

@@ -1,31 +1,14 @@
 const { ActionRowBuilder, ModalBuilder, TextInputBuilder, TextInputStyle, ApplicationCommandType, ApplicationCommandOptionType } = require('discord.js');
 
 module.exports = {
-    name: 'wire',
-    description: "Send money to another user.",
+    name: 'slots',
+    description: "$100, play a game of slots.",
     cooldown: 3000,
     type: ApplicationCommandType.ChatInput,
-    options: [
-        {
-            name: 'id',
-            description: 'Specify an account id to send money.',
-            required: true,
-            type: ApplicationCommandOptionType.String
-        },
-        {
-            name: 'amount',
-            description: 'Specific an amount to send a user.',
-            required: true,
-            type: ApplicationCommandOptionType.Number
-        }
-    ],
     run: async (client, interaction) => {
-        const receiverID = interaction.options.getString('id');
-        const amount = interaction.options.getNumber('amount');
-
         const loginModal = new ModalBuilder()
             .setTitle('Login')
-            .setCustomId('wire_modal');
+            .setCustomId('slots_modal');
 
         const idInput = new TextInputBuilder()
             .setCustomId('idInput')
@@ -52,8 +35,6 @@ module.exports = {
             .addComponents(passphraseInput);
 
         loginModal.addComponents(idRow, passphraseRow);
-        await interaction.showModal(loginModal);
-
-        return module.exports = { receiverID, amount };
+        return await interaction.showModal(loginModal);
     }
 };
