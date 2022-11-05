@@ -38,4 +38,3 @@ This project is licensed under [GNU General Public License v3.0](https://choosea
 
 Inspiration, code snippets, etc.
 * [Command-Handler Template](https://github.com/Nathaniel-VFX/Discord.js-v14-Command-Handlers)
-* [discord-economy-super](https://www.npmjs.com/package/discord-economy-super)
