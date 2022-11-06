@@ -55,13 +55,13 @@ client.on('interactionCreate', async interaction => {
                         });
                         conn.release();
                     } else {
-                        console.log(command);
                         let balance = (await conn.query(`SELECT balance FROM eco WHERE id='${id}';`))[0].balance;
+                        console.log(`${id} (Balance: $${balance}) ran ${command.id} `);
                         module.exports = { id, passphrase, balance };
                         await command.run(client, interaction);
                     }
                 } else {
-                    console.log(command);
+                    console.log(`${interaction.user.username}#${interaction.user.discriminator} (${interaction.user.id}) ran ${command.id}`);
                     await command.run(client, interaction);
                 }
             } catch (error) {
