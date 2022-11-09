@@ -8,16 +8,8 @@ module.exports = {
         let { id, balance } = require('../events/interactionModal');
         let { amount, attachment } = require('../slashCommands/bank/deposit');
 
-        function decimalCount(money) {
-            if (money.toString().includes('.')) {
-                return money.toString().split('.')[1].length;
-            }
-            return 0;
-        }
-
         function attachIsImage(msgAttach) {
-            const type = msgAttach.contentType;
-            return (type.startsWith('image/'));
+            return (msgAttach.contentType.startsWith('image/'))
         }
 
         let db = new QuickDB({ filePath: `./data/depositRequests.sqlite` });
@@ -28,20 +20,6 @@ module.exports = {
                     new EmbedBuilder()
                         .setTitle('Deposit Request')
                         .setDescription(`You already have a deposit request pending! Do \`/cancel deposit\` to cancel your request.`)
-                        .setColor('Red')
-                        .setTimestamp()
-                        .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
-                ]
-            });
-        }
-
-        if (decimalCount(amount) > 2) { // Check if amount is valid
-            return await interaction.reply({
-                ephemeral: true,
-                embeds: [
-                    new EmbedBuilder()
-                        .setTitle('Invalid Amount')
-                        .setDescription(`Deposit amounts may only be up to the 100th's place (.01).`)
                         .setColor('Red')
                         .setTimestamp()
                         .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })

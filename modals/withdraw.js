@@ -9,13 +9,6 @@ module.exports = {
         let { amount } = require('../slashCommands/bank/withdraw');
         let db = new QuickDB({ filePath: `./data/withdrawRequests.sqlite` });
 
-        function decimalCount(money) {
-            if (money.toString().includes('.')) {
-                return money.toString().split('.')[1].length;
-            }
-            return 0;
-        }
-
         if (await db.has(`${interaction.guild.id}.${id}.amount`)) {
             return await interaction.reply({
                 ephemeral: true,
@@ -23,20 +16,6 @@ module.exports = {
                     new EmbedBuilder()
                         .setTitle('Withdrawal Request')
                         .setDescription(`You already have a withdrawal request pending! Do \`/cancel withdraw\` to cancel your request.`)
-                        .setColor('Red')
-                        .setTimestamp()
-                        .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
-                ]
-            });
-        }
-
-        if (decimalCount(amount) > 2) {
-            return await interaction.reply({
-                ephemeral: true,
-                embeds: [
-                    new EmbedBuilder()
-                        .setTitle('Invalid Amount')
-                        .setDescription(`Withdraw amounts may only be up to the 100th's place (.01).`)
                         .setColor('Red')
                         .setTimestamp()
                         .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
