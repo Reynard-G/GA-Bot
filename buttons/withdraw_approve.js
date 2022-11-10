@@ -5,7 +5,7 @@ module.exports = {
 	id: 'withdraw_approve_button',
 	permissions: [],
 	run: async (client, interaction) => {
-		let { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, userID, id } = require("../modals/withdraw");
+		let { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, userID, id, ign } = require("../modals/withdraw");
 		const conn = await client.pool.getConnection();
 		balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance; // Get balance again to update it
 		const currBalance = +Number(Math.round(parseFloat((balance - amount) + "e2")) + "e-2");
@@ -34,7 +34,15 @@ module.exports = {
 
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Withdrawal Request')
-			.setDescription(`\`${id}\`'s withdrawal request of **$${amount}** is **ACCEPTED** and was taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**. \n Balance: **$${balance}**  ➡️  **$${currBalance}**.`)
+			.setDescription(`
+			Account ID: **${id}**
+			Payment IGN: ${ign}
+			Amount: **$${amount}**
+			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+			Status: **APPROVED**
+			Old Balance: **$${balance}**
+			New Balance: **$${currBalance}**
+			`)
 			.setColor('Green')
 			.setTimestamp()
 			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
@@ -45,7 +53,15 @@ module.exports = {
 			embeds: [
 				new EmbedBuilder()
 					.setTitle('Withdrawal Approved')
-					.setDescription(`Approved \`${id}\`'s request to withdrawal **$${amount}** taxed to **$${taxedAmount}**.`)
+					.setDescription(`
+					Account ID: **${id}**
+					Payment IGN: ${ign}
+					Amount: **$${amount}**
+					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+					Status: **APPROVED**
+					Old Balance: **$${balance}**
+					New Balance: **$${currBalance}**
+					`)
 					.setColor('Green')
 					.setTimestamp()
 					.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })

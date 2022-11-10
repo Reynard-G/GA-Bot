@@ -23,9 +23,6 @@ module.exports = {
     run: async (client, interaction) => {
         const amount = interaction.options.getNumber('amount');
         const id = interaction.options.getString('id');
-        const conn = await client.pool.getConnection();
-        await conn.query(`UPDATE eco SET balance=balance + ${amount} WHERE id='${id}'`);
-        conn.release();
 
         // Check if ID exists in database then continue
         const checkID = await conn.query(`SELECT * FROM eco WHERE id='${id}'`);
@@ -40,6 +37,10 @@ module.exports = {
                     .setFooter({ text: `INVALID ID`, iconURL: interaction.guild.iconURL() })
             ]
         });
+
+        const conn = await client.pool.getConnection();
+        await conn.query(`UPDATE eco SET balance=balance + ${amount} WHERE id='${id}'`);
+        conn.release();
 
         return await interaction.reply({
             embeds: [

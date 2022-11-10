@@ -30,7 +30,13 @@ module.exports = {
 
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Deposit Request')
-			.setDescription(`\`${id}\`'s deposit request of **$${amount}** is **DENIED** and was going to be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**.`)
+			.setDescription(`
+			Account ID: **${id}**
+			Amount: **$${amount}**
+			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+			Status: **DENIED**
+			Current Balance: **$${balance}**
+			`)
 			.setImage(attachment.proxyURL)
 			.setColor('Red')
 			.setTimestamp()
@@ -43,7 +49,13 @@ module.exports = {
 			embeds: [
 				new EmbedBuilder()
 					.setTitle('Deposit Denied')
-					.setDescription(`Denied \`${id}\`'s request to deposit **$${amount}** taxed to **$${taxedAmount}**.`)
+					.setDescription(`
+					Account ID: **${id}**
+					Amount: **$${amount}**
+					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+					Status: **DENIED**
+					Current Balance: **$${balance}**
+					`)
 					.setColor('Red')
 					.setTimestamp()
 					.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })

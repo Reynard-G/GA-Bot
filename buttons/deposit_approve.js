@@ -17,7 +17,14 @@ module.exports = {
 
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Deposit Request')
-			.setDescription(`\`${id}\`'s deposit request of **$${amount}** is **ACCEPTED** and was taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**. \n Balance: **$${balance}**  ➡️  **$${currBalance}**.`)
+			.setDescription(`
+			Account ID: **${id}**
+			Amount: **$${amount}**
+			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+			Status: **APPROVED**
+			Old Balance: **$${balance}**
+			New Balance: **$${currBalance}**
+			`)
 			.setImage(attachment.proxyURL)
 			.setColor('Green')
 			.setTimestamp()
@@ -30,7 +37,14 @@ module.exports = {
 
 		const approveEmbed = new EmbedBuilder()
 			.setTitle('Deposit Approved')
-			.setDescription(`Approved \`${id}\`'s request to deposit **$${amount}** taxed to **$${taxedAmount}**.`)
+			.setDescription(`
+			Account ID: **${id}**
+			Amount: **$${amount}**
+			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+			Status: **APPROVED**
+			Old Balance: **$${balance}**
+			New Balance: **$${currBalance}**
+			`)
 			.setColor('Green')
 			.setTimestamp()
 			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });

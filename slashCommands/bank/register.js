@@ -49,7 +49,12 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setTitle('Registered')
-                    .setDescription(`Your account ID is **${user}** and your account passphrase is **${passphrase}**. Please keep these safe as they are the only way to access your account. \n **ANYONE WITH THESE CREDENTIALS AND ACCESS YOUR ACCOUNT!**`)
+                    .setDescription(`
+                    Please keep this information safe and secure. If you lose this information or leak it, we will not be able to help you recover your account/funds.
+                    
+                    **Account ID:** \`${user}\`
+                    **Passphrase:** \`${passphrase}\`
+                    `)
                     .setColor('White')
                     .setTimestamp()
                     .setFooter({ text: `${user} `, iconURL: interaction.guild.iconURL() })

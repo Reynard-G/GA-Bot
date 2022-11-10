@@ -34,6 +34,15 @@ module.exports = {
             .setTitle('Login')
             .setCustomId('withdraw_modal');
 
+        const ignInput = new TextInputBuilder()
+            .setCustomId('ignInput')
+            .setPlaceholder('Enter your in-game name here')
+            .setStyle(TextInputStyle.Short)
+            .setLabel('In-Game Name')
+            .setMinLength(1)
+            .setMaxLength(16)
+            .setRequired(true);
+
         const idInput = new TextInputBuilder()
             .setCustomId('idInput')
             .setPlaceholder('Enter your account ID here')
@@ -52,13 +61,16 @@ module.exports = {
             .setMaxLength(255)
             .setRequired(true);
 
+        const ignRow = new ActionRowBuilder()
+            .addComponents(ignInput);
+
         const idRow = new ActionRowBuilder()
             .addComponents(idInput);
 
         const passphraseRow = new ActionRowBuilder()
             .addComponents(passphraseInput);
 
-        loginModal.addComponents(idRow, passphraseRow);
+        loginModal.addComponents(ignRow, idRow, passphraseRow);
         await interaction.showModal(loginModal);
 
         return module.exports = { amount };

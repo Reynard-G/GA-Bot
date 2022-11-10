@@ -43,7 +43,12 @@ module.exports = {
 
         requestEmbed = new EmbedBuilder()
             .setTitle('Deposit Request')
-            .setDescription(`\`${id}\` is requesting a deposit of **$${amount}** that will be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**. \n They have a current balance of **$${balance}**.`)
+            .setDescription(`
+            Account ID: **${id}**
+            Amount: **$${amount}**
+            Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+            Current Balance: **$${balance}**
+            `)
             .setImage(attachment.proxyURL)
             .setColor('White')
             .setTimestamp()
@@ -71,7 +76,12 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setTitle('Deposit Request Sent')
-                    .setDescription(`Your deposit of **$${amount}** will be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**.`)
+                    .setDescription(`
+                    Account ID: **${id}**
+                    Amount: **$${amount}**
+                    Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+                    Current Balance: **$${balance}**
+                    `)
                     .setImage(attachment.proxyURL)
                     .setColor('Green')
                     .setTimestamp()

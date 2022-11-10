@@ -12,7 +12,12 @@ module.exports = {
 
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Withdrawal Request')
-			.setDescription(`\`${id}\`'s withdrawal request of **$${amount}** is **DENIED** and was going to be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**.`)
+			.setDescription(`
+			Account ID: **${id}**
+			Amount: **$${amount}**
+			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+			Status: **DENIED**
+			`)
 			.setColor('Red')
 			.setTimestamp()
 			.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
@@ -25,7 +30,12 @@ module.exports = {
 			embeds: [
 				new EmbedBuilder()
 					.setTitle('Withdrawal Denied')
-					.setDescription(`Denied \`${id}\`'s request to withdrawal **$${amount}** taxed to **$${taxedAmount}**.`)
+					.setDescription(`
+					Account ID: **${id}**
+					Amount: **$${amount}**
+					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+					Status: **DENIED**
+					`)
 					.setColor('Red')
 					.setTimestamp()
 					.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() })

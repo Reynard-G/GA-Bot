@@ -7,6 +7,7 @@ module.exports = {
     run: async (client, interaction) => {
         let { id, balance } = require('../events/interactionModal');
         let { amount } = require('../slashCommands/bank/withdraw');
+        let ign = interaction.fields.getTextInputValue('ignInput');
         let db = new QuickDB({ filePath: `./data/withdrawRequests.sqlite` });
 
         if (await db.has(`${interaction.guild.id}.${id}.amount`)) {
@@ -46,7 +47,13 @@ module.exports = {
 
         requestEmbed = new EmbedBuilder()
             .setTitle('Withdrawal Request')
-            .setDescription(`\`${id}\` is requesting a withdrawal of **$${amount}** that will be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**. \n They have a current balance of **$${balance}**.`)
+            .setDescription(`
+            Account ID: **${id}**
+            Payment IGN: ${ign}
+            Amount: **$${amount}**
+            Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+            Current Balance: **$${balance}**
+            `)
             .setColor('White')
             .setTimestamp()
             .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
@@ -73,7 +80,12 @@ module.exports = {
             embeds: [
                 new EmbedBuilder()
                     .setTitle('Withdrawal Request Sent')
-                    .setDescription(`Your withdrawal of **$${amount}** will be taxed at a rate of **${percentage}%** + **$${constant}** = **$${taxedAmount}**.`)
+                    .setDescription(`
+                    Account ID: **${id}**
+                    Amount: **$${amount}**
+                    Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
+                    Current Balance: **$${balance}**
+                    `)
                     .setColor('Green')
                     .setTimestamp()
                     .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
@@ -85,6 +97,6 @@ module.exports = {
         await db.set(`${interaction.guild.id}.${id}.requestMsgID`, requestMsg.id);
         await db.set(`${interaction.guild.id}.${id}.channelID`, channelID);
 
-        return module.exports = { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, userID, id };
+        return module.exports = { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, userID, id, ign };
     }
 };
