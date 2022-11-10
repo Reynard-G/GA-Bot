@@ -23,6 +23,20 @@ module.exports = {
             });
         }
 
+        if (balance < amount) {
+            return await interaction.reply({
+                ephemeral: true,
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('Insufficient Funds')
+                        .setDescription(`You do not have enough funds to withdraw **$${amount}**.`)
+                        .setColor('Red')
+                        .setTimestamp()
+                        .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+                ]
+            });
+        }
+
         const userID = interaction.user.id;
         db = new QuickDB({ filePath: `./data/withdrawInfo.sqlite` });
         const channelID = await db.get(`${interaction.guild.id}.channelID.withdrawChannelID`);
