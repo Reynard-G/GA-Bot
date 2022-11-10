@@ -1,7 +1,5 @@
-const { EmbedBuilder, Collection, InteractionType } = require('discord.js');
-const ms = require('ms');
+const { EmbedBuilder, InteractionType } = require('discord.js');
 const client = require('..');
-const cooldown = new Collection();
 
 client.on('interactionCreate', async interaction => {
     try {
