@@ -35,6 +35,6 @@ module.exports = {
             .addComponents(passphraseInput);
 
         loginModal.addComponents(idRow, passphraseRow);
-        await interaction.showModal(loginModal);
+        return await interaction.showModal(loginModal);
     }
 };

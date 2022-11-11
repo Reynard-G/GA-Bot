@@ -8,7 +8,12 @@ const client = new Client({
 		GatewayIntentBits.DirectMessages,
 		GatewayIntentBits.MessageContent
 	], 
-	partials: [Partials.Channel, Partials.Message, Partials.User, Partials.GuildMember, Partials.Reaction] 
+	partials: [
+		Partials.Channel, 
+		Partials.Message, 
+		Partials.User, 
+		Partials.GuildMember, 
+		Partials.Reaction] 
 });
 
 const fs = require('node:fs');
