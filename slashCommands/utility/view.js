@@ -58,20 +58,25 @@ module.exports = {
     run: async (client, interaction) => {
         if (interaction.options.getSubcommand() === 'balance') {
             const id = interaction.options.getString('id');
-            const conn = await client.pool.getConnection();
+            let conn = await client.pool.getConnection();
             const checkID = await conn.query(`SELECT * FROM eco WHERE id='${id}'`);
-            if (checkID.length < 1) return await interaction.reply({
-                ephemeral: true,
-                embeds: [
-                    new EmbedBuilder()
-                        .setTitle('Invalid ID')
-                        .setDescription(`The ID that you have entered does not exist. Please try again.`)
-                        .setColor('Red')
-                        .setTimestamp()
-                        .setFooter({ text: `INVALID ID`, iconURL: interaction.user.displayAvatarURL() })
-                ]
-            });
+            conn.release();
 
+            if (checkID.length < 1) {
+                return await interaction.reply({
+                    ephemeral: true,
+                    embeds: [
+                        new EmbedBuilder()
+                            .setTitle('Invalid ID')
+                            .setDescription(`The ID that you have entered does not exist. Please try again.`)
+                            .setColor('Red')
+                            .setTimestamp()
+                            .setFooter({ text: `INVALID ID`, iconURL: interaction.user.displayAvatarURL() })
+                    ]
+                });
+            }
+
+            conn = await client.pool.getConnection();
             const balance = (await conn.query(`SELECT balance FROM eco WHERE id='${id}'`))[0].balance;
             conn.release();
 

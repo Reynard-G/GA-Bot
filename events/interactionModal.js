@@ -54,6 +54,8 @@ client.on('interactionCreate', async interaction => {
                         conn.release();
                     } else {
                         let balance = (await conn.query(`SELECT balance FROM eco WHERE id='${id}';`))[0].balance;
+                        conn.release();
+                        
                         console.log(`${id} (Balance: $${balance}) ran ${command.id} `);
                         module.exports = { id, passphrase, balance };
                         await command.run(client, interaction);
@@ -70,7 +72,9 @@ client.on('interactionCreate', async interaction => {
                         new EmbedBuilder()
                             .setTitle('Failed To Execute Modals!')
                             .setDescription(`There was an error trying to execute that modal!`)
-                            .addFields(`Error`, `\`\`\`${error}\`\`\``)
+                            .addFields(
+                                { name: 'Error', value: `\`\`\`${error}\`\`\`` }
+                                )
                             .setColor('Red')
                             .setFooter({ text: `FAILED EXECUTE`, iconURL: interaction.guild.iconURL() })
                     ]

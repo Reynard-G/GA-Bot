@@ -25,20 +25,25 @@ module.exports = {
         const id = interaction.options.getString('id');
 
         // Check if ID exists in database then continue
+        let conn = await client.pool.getConnection();
         const checkID = await conn.query(`SELECT * FROM eco WHERE id='${id}'`);
-        if (checkID.length < 1) return await interaction.reply({
-            ephemeral: true,
-            embeds: [
-                new EmbedBuilder()
-                    .setTitle('Invalid ID')
-                    .setDescription(`The ID that you have entered does not exist. Please try again.`)
-                    .setColor('Red')
-                    .setTimestamp()
-                    .setFooter({ text: `INVALID ID`, iconURL: interaction.guild.iconURL() })
-            ]
-        });
+        conn.release();
 
-        const conn = await client.pool.getConnection();
+        if (checkID.length < 1) {
+            return await interaction.reply({
+                ephemeral: true,
+                embeds: [
+                    new EmbedBuilder()
+                        .setTitle('Invalid ID')
+                        .setDescription(`The ID that you have entered does not exist. Please try again.`)
+                        .setColor('Red')
+                        .setTimestamp()
+                        .setFooter({ text: `INVALID ID`, iconURL: interaction.guild.iconURL() })
+                ]
+            });
+        }
+
+        conn = await client.pool.getConnection();
         await conn.query(`UPDATE eco SET balance=balance - ${amount} WHERE id='${id}'`);
         conn.release();
 

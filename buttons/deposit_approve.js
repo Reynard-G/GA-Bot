@@ -6,11 +6,12 @@ module.exports = {
 	permissions: [],
 	run: async (client, interaction) => {
 		let { requestEmbed, buttons, attachment, percentage, constant, taxedAmount, amount, balance, userID, id } = require("../modals/deposit");
-		let db = new QuickDB({ filePath: `./data/roles.sqlite` });
+
 		const conn = await client.pool.getConnection();
 		balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance; // Get balance again to update it
 		const currBalance = +Number(Math.round(parseFloat((balance + taxedAmount) + "e2")) + "e-2");
 		await conn.query(`UPDATE eco SET balance=${currBalance} WHERE id='${id}';`);
+		conn.release();
 
 		buttons.components[0].setDisabled(true);
 		buttons.components[1].setDisabled(true);
@@ -53,8 +54,7 @@ module.exports = {
 			embeds: [approveEmbed]
 		});
 
-		conn.release();
-		db = new QuickDB({ filePath: `./data/depositRequests.sqlite` });
+		const db = new QuickDB({ filePath: `./data/depositRequests.sqlite` });
 		return await db.delete(`${interaction.guild.id}.${id}.amount`);
 	}
 };

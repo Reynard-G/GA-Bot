@@ -6,10 +6,12 @@ module.exports = {
 	permissions: [],
 	run: async (client, interaction) => {
 		let { requestEmbed, buttons, percentage, constant, taxedAmount, amount, balance, userID, id, ign } = require("../modals/withdraw");
+		
 		const conn = await client.pool.getConnection();
 		balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance; // Get balance again to update it
 		const currBalance = +Number(Math.round(parseFloat((balance - amount) + "e2")) + "e-2");
 		await conn.query(`UPDATE eco SET balance=${currBalance} WHERE id='${id}';`);
+		conn.release();
 
 		buttons = new ActionRowBuilder()
 			.addComponents(

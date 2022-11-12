@@ -6,7 +6,7 @@ module.exports = {
     run: async (client, interaction) => {
         let { id, balance } = require('../events/interactionModal');
         let { receiverID, amount } = require('../slashCommands/bank/wire');
-        const conn = await client.pool.getConnection();
+        let conn = await client.pool.getConnection();
         const receiverExists = (await conn.query(`SELECT EXISTS(SELECT * FROM eco WHERE id='${receiverID}');`));
         const senderBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${id}';`))[0].balance;
         conn.release();
@@ -39,9 +39,12 @@ module.exports = {
             });
         }
 
+        conn = await client.pool.getConnection();
         const receiverBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${receiverID}';`))[0].balance;
         await conn.query(`UPDATE eco SET balance=${receiverBalance + amount} WHERE id='${receiverID}';`);
         await conn.query(`UPDATE eco SET balance=${senderBalance - amount} WHERE id='${id}';`);
+        conn.release();
+        
         return await interaction.reply({
             ephemeral: true,
             embeds: [

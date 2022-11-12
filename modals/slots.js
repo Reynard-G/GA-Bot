@@ -7,8 +7,10 @@ module.exports = {
     permissions: [],
     run: async (client, interaction) => {
         let { id, balance } = require('../events/interactionModal');
-        const conn = await client.pool.getConnection();
+        let conn = await client.pool.getConnection();
         balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance;
+        conn.release();
+
         const curr_slot_emojis = ['<a:casino:1036408259717898410>', '<a:casino:1036408259717898410>', '<a:casino:1036408259717898410>'];
         const db = new QuickDB({ filePath: `./data/settings.sqlite` });
         const houseAccount = await db.get(`${interaction.guild.id}.houseAccount`);
@@ -18,7 +20,6 @@ module.exports = {
         const jackpotEmojis = ['🎊'];
 
         if (balance < 100) {
-            conn.release();
             return await interaction.reply({
                 ephemeral: true,
                 embeds: [
@@ -33,7 +34,10 @@ module.exports = {
         }
 
         async function enoughHouseBalance(reward) {
+            conn = await client.pool.getConnection();
             const houseAccountBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${houseAccount}';`))[0].balance;
+            conn.release();
+            
             if (houseAccountBalance < reward) {
                 return false;
             } else {
@@ -99,7 +103,6 @@ module.exports = {
         console.log(!(await enoughHouseBalance(reward)));
 
         // Update balance
-        conn.release();
         if (reward > 0) {
             if (!(await enoughHouseBalance(reward))) {
                 return await interaction.editReply({
@@ -115,8 +118,10 @@ module.exports = {
                 });
             }
 
+            conn = await client.pool.getConnection();
             await conn.query(`UPDATE eco SET balance=balance - 100 + ${reward} WHERE id='${id}'`);
             await conn.query(`UPDATE eco SET balance=balance + 100 - ${reward} WHERE id='${houseAccount}'`);
+            conn.release();
 
             return await interaction.editReply({
                 ephemeral: true,
@@ -134,8 +139,10 @@ module.exports = {
             });
         } else {
 
+            conn = await client.pool.getConnection();
             await conn.query(`UPDATE eco SET balance=balance - 100 WHERE id='${id}'`);
             await conn.query(`UPDATE eco SET balance=balance + 100 WHERE id='${houseAccount}'`);
+            conn.release();
 
             return await interaction.editReply({
                 ephemeral: true,

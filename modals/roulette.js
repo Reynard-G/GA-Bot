@@ -10,6 +10,7 @@ module.exports = {
         let conn = await client.pool.getConnection();
         balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance;
         conn.release();
+        
         const db = new QuickDB({ filePath: `./data/settings.sqlite` });
         const houseAccount = await db.get(`${interaction.guild.id}.houseAccount`);
         const emojis = ['⬛', '🟥', '🟨', '⬜', '🔳'];
@@ -46,6 +47,7 @@ module.exports = {
         }
 
         async function enoughHouseBalance(reward) {
+            conn = await client.pool.getConnection();
             const houseAccountBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${houseAccount}';`))[0].balance;
             if (houseAccountBalance < reward) {
                 await interaction.reply({
@@ -59,8 +61,11 @@ module.exports = {
                             .setFooter({ text: `INSUFFICIENT FUNDS`, iconURL: interaction.guild.iconURL() })
                     ]
                 });
+
+                conn.release();
                 return false;
             } else {
+                conn.release();
                 return true;
             }
         }
