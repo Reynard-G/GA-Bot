@@ -4,9 +4,9 @@ module.exports = {
     id: 'balance_modal',
     permissions: [],
     run: async (client, interaction) => {
-        let { id, balance } = require('../events/interactionModal');
+        let { id } = require('../events/interactionModal');
         const conn = await client.pool.getConnection();
-        balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance;
+        const balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance;
         conn.release();
 
         return await interaction.reply({
