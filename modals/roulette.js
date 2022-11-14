@@ -111,7 +111,6 @@ module.exports = {
                             .setDescription(`The ball landed on ⬛! You've won $200!`)
                             .addFields(
                                 { name: 'Board', value: `${board.map(e => e.join(' ')).join('\n')}` }
-
                             )
                             .setColor('Green')
                             .setTimestamp()
