@@ -31,7 +31,6 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Deposit Request')
 			.setDescription(`
-			Account ID: **${id}**
 			Amount: **$${amount}**
 			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
 			Status: **DENIED**
@@ -40,7 +39,7 @@ module.exports = {
 			.setImage(attachment.proxyURL)
 			.setColor('Red')
 			.setTimestamp()
-			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
+			.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() });
 
 		await interaction.update({ embeds: [requestEmbed], components: [buttons] });
 		module.exports = { requestEmbed, buttons, userID, id };
@@ -50,7 +49,6 @@ module.exports = {
 				new EmbedBuilder()
 					.setTitle('Deposit Denied')
 					.setDescription(`
-					Account ID: **${id}**
 					Amount: **$${amount}**
 					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
 					Status: **DENIED**
@@ -58,7 +56,7 @@ module.exports = {
 					`)
 					.setColor('Red')
 					.setTimestamp()
-					.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+					.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() })
 			]
 		});
 

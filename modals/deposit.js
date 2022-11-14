@@ -44,7 +44,6 @@ module.exports = {
         requestEmbed = new EmbedBuilder()
             .setTitle('Deposit Request')
             .setDescription(`
-            Account ID: **${id}**
             Amount: **$${amount}**
             Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
             Current Balance: **$${balance}**
@@ -52,7 +51,7 @@ module.exports = {
             .setImage(attachment.proxyURL)
             .setColor('White')
             .setTimestamp()
-            .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
+            .setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() });
 
         buttons = new ActionRowBuilder()
             .addComponents(
@@ -77,7 +76,6 @@ module.exports = {
                 new EmbedBuilder()
                     .setTitle('Deposit Request Sent')
                     .setDescription(`
-                    Account ID: **${id}**
                     Amount: **$${amount}**
                     Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
                     Current Balance: **$${balance}**
@@ -85,7 +83,7 @@ module.exports = {
                     .setImage(attachment.proxyURL)
                     .setColor('Green')
                     .setTimestamp()
-                    .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+                    .setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() })
             ]
         });
 

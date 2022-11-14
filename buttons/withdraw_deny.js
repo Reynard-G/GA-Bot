@@ -13,14 +13,13 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Withdrawal Request')
 			.setDescription(`
-			Account ID: **${id}**
 			Amount: **$${amount}**
 			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
 			Status: **DENIED**
 			`)
 			.setColor('Red')
 			.setTimestamp()
-			.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() });
+			.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.user.displayAvatarURL() });
 
 		await interaction.update({
 			embeds: [requestEmbed],
@@ -31,14 +30,13 @@ module.exports = {
 				new EmbedBuilder()
 					.setTitle('Withdrawal Denied')
 					.setDescription(`
-					Account ID: **${id}**
 					Amount: **$${amount}**
 					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
 					Status: **DENIED**
 					`)
 					.setColor('Red')
 					.setTimestamp()
-					.setFooter({ text: `${interaction.user.id} `, iconURL: interaction.user.displayAvatarURL() })
+					.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.user.displayAvatarURL() })
 			]
 		});
 

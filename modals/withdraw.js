@@ -33,7 +33,7 @@ module.exports = {
                         .setDescription(`You do not have enough funds to withdraw **$${amount}**.`)
                         .setColor('Red')
                         .setTimestamp()
-                        .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+                        .setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() })
                 ]
             });
         }
@@ -48,7 +48,6 @@ module.exports = {
         requestEmbed = new EmbedBuilder()
             .setTitle('Withdrawal Request')
             .setDescription(`
-            Account ID: **${id}**
             Payment IGN: ${ign}
             Amount: **$${amount}**
             Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
@@ -56,7 +55,7 @@ module.exports = {
             `)
             .setColor('White')
             .setTimestamp()
-            .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
+            .setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() });
 
         buttons = new ActionRowBuilder()
             .addComponents(
@@ -81,14 +80,13 @@ module.exports = {
                 new EmbedBuilder()
                     .setTitle('Withdrawal Request Sent')
                     .setDescription(`
-                    Account ID: **${id}**
                     Amount: **$${amount}**
                     Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
                     Current Balance: **$${balance}**
                     `)
                     .setColor('Green')
                     .setTimestamp()
-                    .setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+                    .setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() })
             ]
         });
 

@@ -19,7 +19,6 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Deposit Request')
 			.setDescription(`
-			Account ID: **${id}**
 			Amount: **$${amount}**
 			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
 			Status: **APPROVED**
@@ -29,7 +28,7 @@ module.exports = {
 			.setImage(attachment.proxyURL)
 			.setColor('Green')
 			.setTimestamp()
-			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
+			.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() });
 
 		await interaction.update({
 			embeds: [requestEmbed],
@@ -39,7 +38,6 @@ module.exports = {
 		const approveEmbed = new EmbedBuilder()
 			.setTitle('Deposit Approved')
 			.setDescription(`
-			Account ID: **${id}**
 			Amount: **$${amount}**
 			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
 			Status: **APPROVED**
@@ -48,7 +46,7 @@ module.exports = {
 			`)
 			.setColor('Green')
 			.setTimestamp()
-			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
+			.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() });
 
 		await client.users.cache.get(userID).send({
 			embeds: [approveEmbed]

@@ -37,7 +37,6 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Withdrawal Request')
 			.setDescription(`
-			Account ID: **${id}**
 			Payment IGN: ${ign}
 			Amount: **$${amount}**
 			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
@@ -47,7 +46,7 @@ module.exports = {
 			`)
 			.setColor('Green')
 			.setTimestamp()
-			.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() });
+			.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() });
 
 		await interaction.update({ embeds: [requestEmbed], components: [buttons] });
 		module.exports = { requestEmbed, buttons, userID, id };
@@ -56,7 +55,6 @@ module.exports = {
 				new EmbedBuilder()
 					.setTitle('Withdrawal Approved')
 					.setDescription(`
-					Account ID: **${id}**
 					Payment IGN: ${ign}
 					Amount: **$${amount}**
 					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
@@ -66,7 +64,7 @@ module.exports = {
 					`)
 					.setColor('Green')
 					.setTimestamp()
-					.setFooter({ text: `${id} `, iconURL: interaction.guild.iconURL() })
+					.setFooter({ text: `Gamblers Anonymous`, iconURL: interaction.guild.iconURL() })
 			]
 		});
 
