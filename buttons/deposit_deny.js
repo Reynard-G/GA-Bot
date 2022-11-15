@@ -31,10 +31,7 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Deposit Request')
 			.setDescription(`
-			Amount: **$${amount}**
-			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-			Status: **DENIED**
-			Current Balance: **$${balance}**
+			Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **DENIED** \n Current Balance: **$${balance}**
 			`)
 			.setImage(attachment.proxyURL)
 			.setColor('Red')
@@ -49,10 +46,7 @@ module.exports = {
 				new EmbedBuilder()
 					.setTitle('Deposit Denied')
 					.setDescription(`
-					Amount: **$${amount}**
-					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-					Status: **DENIED**
-					Current Balance: **$${balance}**
+					Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **DENIED** \n Current Balance: **$${balance}**
 					`)
 					.setColor('Red')
 					.setTimestamp()

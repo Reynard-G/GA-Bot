@@ -13,9 +13,7 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Withdrawal Request')
 			.setDescription(`
-			Amount: **$${amount}**
-			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-			Status: **DENIED**
+			Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **DENIED**
 			`)
 			.setColor('Red')
 			.setTimestamp()
@@ -30,9 +28,7 @@ module.exports = {
 				new EmbedBuilder()
 					.setTitle('Withdrawal Denied')
 					.setDescription(`
-					Amount: **$${amount}**
-					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-					Status: **DENIED**
+					Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **DENIED**
 					`)
 					.setColor('Red')
 					.setTimestamp()

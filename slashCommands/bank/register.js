@@ -50,10 +50,7 @@ module.exports = {
                 new EmbedBuilder()
                     .setTitle('Registered')
                     .setDescription(`
-                    Please keep this information safe and secure. If you lose this information or leak it, we will not be able to help you recover your account/funds.
-                    
-                    **Account ID:** \`${user}\`
-                    **Passphrase:** \`${passphrase}\`
+                    Please keep this information safe and secure. If you lose this information or leak it, we will not be able to help you recover your account/funds. \n\n **Account ID:** \`${user}\` \n **Passphrase:** \`${passphrase}\`
                     `)
                     .setColor('White')
                     .setTimestamp()

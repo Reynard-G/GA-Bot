@@ -4,10 +4,7 @@ module.exports = {
     id: 'balance_modal',
     permissions: [],
     run: async (client, interaction) => {
-        let { id } = require('../events/interactionModal');
-        const conn = await client.pool.getConnection();
-        const balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance;
-        conn.release();
+        let { id, balance } = require('../events/interactionModal');
 
         return await interaction.reply({
             ephemeral: true,

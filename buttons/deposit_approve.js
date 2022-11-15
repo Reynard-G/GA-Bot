@@ -19,11 +19,7 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Deposit Request')
 			.setDescription(`
-			Amount: **$${amount}**
-			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-			Status: **APPROVED**
-			Old Balance: **$${balance}**
-			New Balance: **$${currBalance}**
+			Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **APPROVED** \n Old Balance: **$${balance}** \n New Balance: **$${currBalance}**
 			`)
 			.setImage(attachment.proxyURL)
 			.setColor('Green')
@@ -38,11 +34,7 @@ module.exports = {
 		const approveEmbed = new EmbedBuilder()
 			.setTitle('Deposit Approved')
 			.setDescription(`
-			Amount: **$${amount}**
-			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-			Status: **APPROVED**
-			Old Balance: **$${balance}**
-			New Balance: **$${currBalance}**
+			Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **APPROVED** \n Old Balance: **$${balance}** \n New Balance: **$${currBalance}**
 			`)
 			.setColor('Green')
 			.setTimestamp()

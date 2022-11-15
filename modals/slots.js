@@ -7,9 +7,6 @@ module.exports = {
     permissions: [],
     run: async (client, interaction) => {
         let { id, balance } = require('../events/interactionModal');
-        let conn = await client.pool.getConnection();
-        balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance;
-        conn.release();
 
         const curr_slot_emojis = ['<a:casino:1036408259717898410>', '<a:casino:1036408259717898410>', '<a:casino:1036408259717898410>'];
         const db = new QuickDB({ filePath: `./data/settings.sqlite` });
@@ -35,7 +32,7 @@ module.exports = {
 
         async function enoughHouseBalance(reward) {
             conn = await client.pool.getConnection();
-            const houseAccountBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${houseAccount}';`))[0].balance;
+            const houseAccountBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${houseAccount}';`))[0].balance ?? 0;
             conn.release();
             
             if (houseAccountBalance < reward) {

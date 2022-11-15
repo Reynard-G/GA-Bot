@@ -37,12 +37,7 @@ module.exports = {
 		requestEmbed = new EmbedBuilder()
 			.setTitle('Withdrawal Request')
 			.setDescription(`
-			Payment IGN: ${ign}
-			Amount: **$${amount}**
-			Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-			Status: **APPROVED**
-			Old Balance: **$${balance}**
-			New Balance: **$${currBalance}**
+			Payment IGN: ${ign} \n Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **APPROVED** \n Old Balance: **$${balance}** \n New Balance: **$${currBalance}**
 			`)
 			.setColor('Green')
 			.setTimestamp()
@@ -55,12 +50,7 @@ module.exports = {
 				new EmbedBuilder()
 					.setTitle('Withdrawal Approved')
 					.setDescription(`
-					Payment IGN: ${ign}
-					Amount: **$${amount}**
-					Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-					Status: **APPROVED**
-					Old Balance: **$${balance}**
-					New Balance: **$${currBalance}**
+					Payment IGN: ${ign} \n Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Status: **APPROVED** \n Old Balance: **$${balance}** \n New Balance: **$${currBalance}**
 					`)
 					.setColor('Green')
 					.setTimestamp()

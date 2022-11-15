@@ -44,9 +44,7 @@ module.exports = {
         requestEmbed = new EmbedBuilder()
             .setTitle('Deposit Request')
             .setDescription(`
-            Amount: **$${amount}**
-            Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-            Current Balance: **$${balance}**
+            Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Current Balance: **$${balance}**
             `)
             .setImage(attachment.proxyURL)
             .setColor('White')
@@ -76,9 +74,7 @@ module.exports = {
                 new EmbedBuilder()
                     .setTitle('Deposit Request Sent')
                     .setDescription(`
-                    Amount: **$${amount}**
-                    Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}**
-                    Current Balance: **$${balance}**
+                    Amount: **$${amount}** \n Taxed Amount (${percentage}% + $${constant}): **$${taxedAmount}** \n Current Balance: **$${balance}**
                     `)
                     .setImage(attachment.proxyURL)
                     .setColor('Green')

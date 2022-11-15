@@ -7,9 +7,6 @@ module.exports = {
     run: async (client, interaction) => {
         let { id } = require('../events/interactionModal');
         let { chose } = require('../slashCommands/casino/roulette');
-        let conn = await client.pool.getConnection();
-        balance = (await conn.query(`SELECT balance FROM eco WHERE id = '${id}';`))[0].balance;
-        conn.release();
         
         const db = new QuickDB({ filePath: `./data/settings.sqlite` });
         const houseAccount = await db.get(`${interaction.guild.id}.houseAccount`);
@@ -37,7 +34,7 @@ module.exports = {
 
         // Update the user's balance based on reward
         async function updateBalance(id, reward, sign) {
-            conn = await client.pool.getConnection();
+            const conn = await client.pool.getConnection();
             if (sign == '+') {
                 await conn.query(`UPDATE eco SET balance=balance - 100 + ${reward} WHERE id='${id}'`);
             } else {
@@ -47,8 +44,9 @@ module.exports = {
         }
 
         async function enoughHouseBalance(reward) {
-            conn = await client.pool.getConnection();
-            const houseAccountBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${houseAccount}';`))[0].balance;
+            const conn = await client.pool.getConnection();
+            const houseAccountBalance = (await conn.query(`SELECT balance FROM eco WHERE id='${houseAccount}';`))[0].balance ?? 0;
+            conn.release()
             if (houseAccountBalance < reward) {
                 await interaction.reply({
                     ephemeral: true,
@@ -61,11 +59,8 @@ module.exports = {
                             .setFooter({ text: `INSUFFICIENT FUNDS`, iconURL: interaction.guild.iconURL() })
                     ]
                 });
-
-                conn.release();
                 return false;
             } else {
-                conn.release();
                 return true;
             }
         }
