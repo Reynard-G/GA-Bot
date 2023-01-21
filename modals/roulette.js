@@ -111,7 +111,6 @@ module.exports = {
                             .setTimestamp()
                             .setFooter({ text: `${id}`, iconURL: interaction.guild.iconURL() })
                     ]
-
                 });
             }
         } else if (ballChosen == '<:redroulette:1036317407393894401>' && chose == 'red') {

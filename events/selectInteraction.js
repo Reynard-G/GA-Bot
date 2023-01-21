@@ -2,7 +2,7 @@ const { EmbedBuilder } = require('discord.js');
 const client = require('..');
 
 client.on('interactionCreate', async interaction => {
-    if (!interaction.isSelectMenu()) return;
+    if (!interaction.isStringSelectMenu()) return;
 
     const command = client.selectMenus.get(interaction.customId);
     if (!command) return;
